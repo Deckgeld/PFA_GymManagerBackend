@@ -66,6 +66,8 @@ namespace GymManager.ApplicationServices.Users
             var user = await _userManager.FindByIdAsync(id);
 
             user.PhoneNumber = userDto.PhoneNumber;
+            user.UserName = userDto.UserName;
+            user.Email = userDto.UserName;
 
 
             UserStore<IdentityUser> store = new UserStore<IdentityUser>(_context);
