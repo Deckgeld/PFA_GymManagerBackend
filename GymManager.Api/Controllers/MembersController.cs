@@ -55,18 +55,31 @@ namespace GymManager.Api.Controllers
         public async Task<MemberResponse> Get(int id)
         {
             Member member = await _membersAppService.GetMemberAsync(id);
-
-            MemberDto memberDto = _mapper.Map<MemberDto>(member);
-
-            memberDto.CityId = member.City.Id;
-            memberDto.MembershipTypeId = member.MembershipType.Id;
-            return new MemberResponse
+            if(member != null)
             {
-                HasError = false,
-                Message = "Member Deleted",
-                Model = memberDto,
-                RequestId = System.Diagnostics.Activity.Current?.Id
-            };
+                MemberDto memberDto = _mapper.Map<MemberDto>(member);
+
+                memberDto.CityId = member.City.Id;
+                memberDto.MembershipTypeId = member.MembershipType.Id;
+                return new MemberResponse
+                {
+                    HasError = false,
+                    Message = "Member Deleted",
+                    Model = memberDto,
+                    RequestId = System.Diagnostics.Activity.Current?.Id
+                };
+            }
+            else
+            {
+                return new MemberResponse
+                {
+                    HasError = true,
+                    Message = "Member not found",
+                    Model = null,
+                    RequestId = System.Diagnostics.Activity.Current?.Id
+                };
+            }
+            
         }
 
         [HttpDelete("{id}")]
