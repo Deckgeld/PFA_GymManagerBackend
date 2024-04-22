@@ -26,6 +26,11 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//retrieve port from environment variables
+var port = builder.Configuration["PORT"];
+
+//set listening urls
+builder.WebHost.UseUrls($"http://*:{port};http://localhost:3000");
 
 builder.Host.UseSerilog((context, services, configuration) => configuration
                     .ReadFrom.Configuration(context.Configuration)
