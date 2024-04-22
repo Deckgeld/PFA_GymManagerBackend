@@ -30,7 +30,7 @@ var builder = WebApplication.CreateBuilder(args);
 var port = builder.Configuration["PORT"];
 
 //set listening urls
-builder.WebHost.UseUrls($"http://*:{port};http://localhost:3000");
+builder.WebHost.UseUrls($"http://:{port};http://localhost:3000");
 
 builder.Host.UseSerilog((context, services, configuration) => configuration
                     .ReadFrom.Configuration(context.Configuration)
@@ -48,11 +48,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // MySQL Connection
-var db_server = builder.Configuration["MYSQLHOST"];
-var db_port = builder.Configuration["MYSQLPORT"];
-var db_database = builder.Configuration["MYSQL_DATABASE"];
-var db_user = builder.Configuration["MYSQLUSER"];
-var db_password = builder.Configuration["MYSQLPASSWORD"];
+var db_server = builder.Configuration["db_server"];
+var db_port = builder.Configuration["db_port"];
+var db_database = builder.Configuration["db_database"];
+var db_user = builder.Configuration["db_user"];
+var db_password = builder.Configuration["db_password"];
 string connectionString;
 
 if (db_server == null)
