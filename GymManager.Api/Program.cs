@@ -30,7 +30,7 @@ var builder = WebApplication.CreateBuilder(args);
 var port = builder.Configuration["PORT"];
 
 //set listening urls
-builder.WebHost.UseUrls($"http://:{port};http://localhost:3000");
+builder.WebHost.UseUrls($"http://*:{port};http://localhost:3000");
 
 builder.Host.UseSerilog((context, services, configuration) => configuration
                     .ReadFrom.Configuration(context.Configuration)
