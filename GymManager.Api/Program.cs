@@ -26,6 +26,12 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//retrieve port from environment variables
+var port = builder.Configuration["PORT"];
+
+//set listening urls
+builder.WebHost.UseUrls($"http://*:{port};http://localhost:3000");
+
 builder.Host.UseSerilog((context, services, configuration) => configuration
                     .ReadFrom.Configuration(context.Configuration)
                     .ReadFrom.Services(services)
@@ -41,11 +47,27 @@ builder.Services.AddControllers().AddNewtonsoftJson(x =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//MySql Connection
-string connectionString = builder.Configuration.GetConnectionString("Default");
+// MySQL Connection
+var db_server = builder.Configuration["MYSQLHOST"];
+var db_port = builder.Configuration["MYSQLPORT"];
+var db_database = builder.Configuration["MYSQL_DATABASE"];
+var db_user = builder.Configuration["MYSQLUSER"];
+var db_password = builder.Configuration["MYSQLPASSWORD"];
+string connectionString;
+
+if (db_server == null)
+{
+    connectionString = builder.Configuration.GetConnectionString("Default");
+}
+else
+{
+    connectionString = $"server={db_server};port={db_port};database={db_database};user={db_user};password={db_password}";
+}
+
 
 builder.Services.AddDbContext<GymManagerContext>(options =>
                 options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+
 
 //SQL Server Connection
 /*builder.Services.AddDbContext<GymManagerContext>(
@@ -148,6 +170,7 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
 
 using (var scope = app.Services.CreateScope())
 {
