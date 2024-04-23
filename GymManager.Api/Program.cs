@@ -55,16 +55,10 @@ var db_port = builder.Configuration["db_port"];
 var db_database = builder.Configuration["db_database"];
 var db_user = builder.Configuration["db_user"];
 var db_password = builder.Configuration["db_password"];
-string connectionString;
 
-if (db_server == null)
-{
-    connectionString = builder.Configuration.GetConnectionString("Default");
-}
-else
-{
-    connectionString = $"server={db_server};port={db_port};database={db_database};user={db_user};password={db_password}";
-}
+string connectionString = (db_server == null && db_password == null) 
+    ? builder.Configuration.GetConnectionString("Default")
+    : $"server={db_server};port={db_port};database={db_database};user={db_user};password={db_password}";
 
 
 builder.Services.AddDbContext<GymManagerContext>(options =>
@@ -131,7 +125,8 @@ builder.Services
             ValidateIssuerSigningKey = true,
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"] != null ? builder.Configuration["Jwt:Key"] : ""))
+
         };
     });
 
