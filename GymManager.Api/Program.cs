@@ -27,10 +27,12 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 //retrieve port from environment variables
-var port = builder.Configuration["PORT"];
-builder.WebHost.UseUrls(port != null 
-    ? $"https://*:{port}" 
-    : "http://localhost:3000");
+if (Environment.GetEnvironmentVariable("PORT") is not null and string environmentPort   //Verifica si no es nulo asigna su valor a la variable environmentPort
+    && string.IsNullOrEmpty(environmentPort) == false     // Asegurar que la variable tenga un valor (no nulo ni vacío)
+    && int.TryParse(environmentPort, out int port))      // Intentar convertir el valor a un entero
+{
+    builder.WebHost.ConfigureKestrel(o => o.ListenAnyIP(port)); // Configurar Kestrel para escuchar en cualquier dirección IP y el puerto analizado
+}
 
 builder.Host.UseSerilog((context, services, configuration) => configuration
                     .ReadFrom.Configuration(context.Configuration)
