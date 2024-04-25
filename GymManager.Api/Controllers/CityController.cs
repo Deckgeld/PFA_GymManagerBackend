@@ -4,6 +4,7 @@ using GymManager.ApplicationServices.DTOs.Members;
 using GymManager.ApplicationServices.DTOs.Users;
 using GymManager.ApplicationServices.Members;
 using GymManager.Core.Members;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -14,6 +15,7 @@ namespace GymManager.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CityController : ControllerBase
     {
         private readonly ICitiesAppService _cityService;

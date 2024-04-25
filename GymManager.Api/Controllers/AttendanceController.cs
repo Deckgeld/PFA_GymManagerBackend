@@ -5,12 +5,14 @@ using GymManager.ApplicationServices.DTOs.Attendances;
 using GymManager.ApplicationServices.DTOs.Members;
 using GymManager.ApplicationServices.Members;
 using GymManager.Core.Members;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GymManager.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class AttendanceController : ControllerBase
     {
         private readonly IAttendanceAppService _attendanceService;

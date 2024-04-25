@@ -104,8 +104,6 @@ builder.Services.AddSwaggerGen(option =>
     });
 });
 
-var JwtKey = "bpm5zVy2RHUMkvcmhffALTnLgy8uEgXU";
-
 builder.Services
     .AddHttpContextAccessor()
     .AddAuthorization()
@@ -127,7 +125,10 @@ builder.Services
             ValidateIssuerSigningKey = true,
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes( JwtKey ))
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"] != null 
+                ? builder.Configuration["Jwt:Key"]
+                : "bpm5zVy2RHUMkvcmhffALTnLgy8uEgXU"
+            ))
 
         };
     });

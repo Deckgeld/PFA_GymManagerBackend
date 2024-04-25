@@ -17,6 +17,7 @@ namespace GymManager.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class MembersController : ControllerBase
     {
         private readonly IMembersAppService _membersAppService;

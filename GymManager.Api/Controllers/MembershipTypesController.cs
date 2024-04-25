@@ -4,11 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using GymManager.ApplicationServices.DTOs.MembershipTypes;
 using GymManager.Api.Responses;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GymManager.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class MembershipTypesController : ControllerBase
     {
         private readonly IMembershipTypesAppService _membershipTypesAppService;

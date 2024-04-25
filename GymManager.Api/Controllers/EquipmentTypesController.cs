@@ -6,11 +6,13 @@ using GymManager.Api.Responses;
 using GymManager.ApplicationServices.DTOs.Members;
 using GymManager.Core.Members;
 using GymManager.Core.EquipmentTypes;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GymManager.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class EquipmentTypesController : ControllerBase
     {
         private readonly IEquipmentTypeAppService _equipmentTypeAppService;
